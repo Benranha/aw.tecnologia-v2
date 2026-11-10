@@ -1,48 +1,165 @@
 @import "tailwindcss";
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/source-serif-4";
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
 
 @theme {
-  --color-canvas: #f5f2ec;
-  --color-paper: #efeae1;
-  --color-ink: #16151c;
-  --color-ink-soft: #4e4b57;
-  --color-deep: #14131a;
-  --color-accent: #1478b4;
-  --color-navy: #2a2a6e;
-  --color-ok: #1e7b4d;
-  --color-wait: #8a6a1f;
-  --color-rule: rgb(22 21 28 / 0.16);
-  --font-display: "Source Serif 4 Variable", Georgia, serif;
-  --font-sans: "Inter Variable", system-ui, -apple-system, sans-serif;
+  --color-bg: #07080b;
+  --color-bg2: #0e1016;
+  --color-bg3: #151821;
+  --color-fg: #ece8df;
+  --color-muted: #8f8b96;
+  --color-line: rgb(236 232 223 / 0.1);
+  --color-accent: #3fa7ff;
+  --color-accent-deep: #0f6fc0;
+  --color-amber: #ffb547;
+  --color-ok: #3fcf8e;
+  --color-paper: #f1ede4;
+  --color-paper2: #e7e1d5;
+  --color-ink: #121318;
+  --color-ink-soft: #55525d;
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, sans-serif;
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --font-serif: "Instrument Serif", Georgia, serif;
 }
 
 html {
-  font-size: 18px;
-  scroll-behavior: smooth;
-}
-@media (min-width: 700px) {
-  html { font-size: 20px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  background: var(--color-bg);
+  color-scheme: dark;
 }
 body {
-  background: var(--color-canvas);
-  color: var(--color-ink);
+  background: var(--color-bg);
+  color: var(--color-fg);
   font-family: var(--font-sans);
-  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
-h1, h2, h3 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.012em;
+::selection {
+  background: var(--color-accent);
+  color: #000;
 }
 
-/* revelação ao rolar */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
-.reveal.is-in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+/* grão de filme sobre tudo */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 70;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* cartões com holofote que segue o mouse */
+.spot {
+  position: relative;
+  isolation: isolate;
+  --mx: -500px;
+  --my: -500px;
+}
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(380px circle at var(--mx) var(--my), rgb(63 167 255 / 0.9), transparent 45%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 2;
+}
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(500px circle at var(--mx) var(--my), rgb(63 167 255 / 0.09), transparent 40%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* texto vazado do letreiro */
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(236 232 223 / 0.35);
+  transition: color 0.35s, -webkit-text-stroke-color 0.35s;
+}
+.outline-text:hover {
+  color: var(--color-accent);
+  -webkit-text-stroke-color: var(--color-accent);
+}
+
+/* cursor que acompanha (só com mouse) */
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 38px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  border-radius: 999px;
+  border: 1px solid rgb(236 232 223 / 0.55);
+  pointer-events: none;
+  z-index: 80;
+  mix-blend-mode: difference;
+  display: grid;
+  place-items: center;
+  transition: width 0.25s, height 0.25s, margin 0.25s, background 0.25s, border-color 0.25s;
+}
+.cursor-ring[data-hover="1"] {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: rgb(236 232 223);
+  border-color: transparent;
+}
+.cursor-ring span {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #000;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cursor-ring[data-hover="1"] span {
+  opacity: 1;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.9; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.pulse::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 2px solid var(--color-accent);
+  animation: pulse-ring 1.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse::after { animation: none; }
+  html { scroll-behavior: auto; }
+}
+html { scroll-behavior: smooth; }

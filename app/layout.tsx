@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Providers } from "@/components/ui";
 
-const title = "AW Tecnologia · Tudo num lugar só";
+const title = "AW Tecnologia · Tudo da sua empresa, num lugar só";
 const description =
-  "A AW desenvolve os sistemas, sites e aplicativos que juntam o que hoje está espalhado. 22 anos em Manaus, desde 2003.";
+  "Sistemas, sites e aplicativos sob medida que juntam o que hoje está espalhado em planilhas, cadernos e grupos de WhatsApp. 22 anos em Manaus, desde 2003.";
 
 export const metadata: Metadata = {
   title,
@@ -12,12 +13,14 @@ export const metadata: Metadata = {
   icons: { icon: "/logo-mark.png" },
 };
 
-export const viewport: Viewport = { themeColor: "#f5f2ec" };
+export const viewport: Viewport = { themeColor: "#07080b" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
