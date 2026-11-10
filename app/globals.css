@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/source-serif-4";
+
+@theme {
+  --color-canvas: #f5f2ec;
+  --color-paper: #efeae1;
+  --color-ink: #16151c;
+  --color-ink-soft: #4e4b57;
+  --color-deep: #14131a;
+  --color-accent: #1478b4;
+  --color-navy: #2a2a6e;
+  --color-ok: #1e7b4d;
+  --color-wait: #8a6a1f;
+  --color-rule: rgb(22 21 28 / 0.16);
+  --font-display: "Source Serif 4 Variable", Georgia, serif;
+  --font-sans: "Inter Variable", system-ui, -apple-system, sans-serif;
+}
+
+html {
+  font-size: 18px;
+  scroll-behavior: smooth;
+}
+@media (min-width: 700px) {
+  html { font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+}
+
+/* revelação ao rolar */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
